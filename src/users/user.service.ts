@@ -51,7 +51,7 @@ export class UserService {
     var check=this.userRepository.findOne({ 'userId': patient_code } );
     var temp_time=0;
     var num=patient_code.toString();
-    var url='http://10.1.103.246/uploadapi/ECG/ECG_3lead/';
+    var url='http://10.1.103.134:5544/ECG/ECG_3lead/';
     url=url.concat(num);
     while((await check).Status==1) {
       var data:any=[];
@@ -64,6 +64,7 @@ export class UserService {
       var reg1=jsonData.Diff_1.split(",");
       var t=reg1[0];
       t=parseInt(t);
+      console.log(t);
       var reg2=jsonData.Diff_2.split(",");
       var reg3=jsonData.Diff_3.split(",");
       if (t!=temp_time) {
@@ -73,13 +74,26 @@ export class UserService {
       var d3:any=[];
       for (var i =0; i < reg1[1].length;i=i+4) {
         var tmp='0x'+reg1[1][i]+reg1[1][i+1]+reg1[1][i+2]+reg1[1][i+3];
-        var trans=parseInt(tmp)*0.01373291015625;
+        var trans=parseInt(tmp,16);
+        if ((trans & 0x8000) > 0) {
+          trans = trans - 0x10000;
+       }
+        trans=trans*0.020926339;
         d1.push(trans);
         tmp='0x'+reg2[1][i]+reg2[1][i+1]+reg2[1][i+2]+reg2[1][i+3];
-        trans=parseInt(tmp)*0.01373291015625;
+        trans=parseInt(tmp,16);
+        if ((trans & 0x8000) > 0) {
+          trans = trans - 0x10000;
+       }
+        trans=trans*0.020926339;
         d2.push(trans);
         tmp='0x'+reg3[1][i]+reg3[1][i+1]+reg3[1][i+2]+reg3[1][i+3];
-        trans=parseInt(tmp)*0.01373291015625;
+        trans=parseInt(tmp,16);
+        if ((trans & 0x8000) > 0) {
+          trans = trans - 0x10000;
+       }
+        trans=trans*0.020926339;
+        console.log(trans);
         d3.push(trans);
       }
       data={
