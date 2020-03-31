@@ -27,13 +27,14 @@ export class Ecgdata12Service {
     params.from=parseInt(params.from);
     params.to=parseInt(params.to);
 
-    if (!params.from && !params.limit && !params.to)
+    //if (!params.from && !params.limit && !params.to)
 		
-      return await this.ecgdata12Repository.find({user: { userId: params.id }});
+    //  return await this.ecgdata12Repository.find({user: { userId: params.id }});
 
     const query: any = {
       where: {  userId : params.id },
-      order: { time: 'ASC' },
+      order: { time: 'DESC' },
+      take: 1500,
       };
     //  if (params.to) {
     //     query.where.time = Between(params.from, params.to);
@@ -47,9 +48,9 @@ export class Ecgdata12Service {
     if (params.to) {
      query.where.time= {$gte:params.from , $lte:params.to};
     }
-    else{
-     query.where.time={$gte:params.from};
-     } 
+    // else{
+    //  query.where.time={$gte:params.from};
+    //  } 
     
   
   if (Boolean((await this.userService.getUserById(params.id)).userId ))
@@ -85,43 +86,43 @@ export class Ecgdata12Service {
           var tmp10 :  any = [];;
           var tmp11 : any = [];;
           var tmp12 : any = [];;
-
+          console.log(p.time);
             tmp.push(p.I.toFixed(2));
             tmp.push(p.time);
-            I.push(tmp);
+            I.unshift(tmp);
             tmp2.push(p.II.toFixed(2));
             tmp2.push(p.time);
-            II.push(tmp2);
+            II.unshift(tmp2);
             tmp3.push(p.III.toFixed(2));
             tmp3.push(p.time);
-            III.push(tmp3);
+            III.unshift(tmp3);
             tmp4.push(p.V1.toFixed(2));
             tmp4.push(p.time);
-            V1.push(tmp4);
+            V1.unshift(tmp4);
             tmp5.push(p.V2.toFixed(2));
             tmp5.push(p.time);
-            V2.push(tmp5);
+            V2.unshift(tmp5);
             tmp6.push(p.V3.toFixed(2));
             tmp6.push(p.time);
-            V3.push(tmp6);
+            V3.unshift(tmp6);
             tmp7.push(p.V4.toFixed(2));
             tmp7.push(p.time);
-            V4.push(tmp7);
+            V4.unshift(tmp7);
             tmp8.push(p.V5.toFixed(2));
             tmp8.push(p.time);
-            V5.push(tmp8);
+            V5.unshift(tmp8);
             tmp9.push(p.V6.toFixed(2));
             tmp9.push(p.time);
-            V6.push(tmp9);
+            V6.unshift(tmp9);
             tmp10.push(p.aVR.toFixed(2));
             tmp10.push(p.time);
-            aVR.push(tmp10);
+            aVR.unshift(tmp10);
             tmp11.push(p.aVL.toFixed(2));
             tmp11.push(p.time);
-            aVL.push(tmp11);
+            aVL.unshift(tmp11);
             tmp12.push(p.aVF.toFixed(2));
             tmp12.push(p.time);
-            aVF.push(tmp12);
+            aVF.unshift(tmp12);
             if(cnt==255) {
               total_packet[packet_cnt]={
                 'userId':params.id,
@@ -175,16 +176,16 @@ export class Ecgdata12Service {
     var i;
     if(params.to) {
       for (i=0;i<=cnt;i++) {
-        total_packetaaa.push(total_packet[i]);  
+        total_packetaaa.unshift(total_packet[i]);  
       }
     }
     else {
-    total_packetaaa.push(total_packet[packet_cnt-5]);
-    total_packetaaa.push(total_packet[packet_cnt-4]);
-    total_packetaaa.push(total_packet[packet_cnt-3]);
-    total_packetaaa.push(total_packet[packet_cnt-2]);
-    total_packetaaa.push(total_packet[packet_cnt-1]);
-    total_packetaaa.push(total_packet[packet_cnt]);
+    total_packetaaa.unshift(total_packet[packet_cnt-5]);
+    total_packetaaa.unshift(total_packet[packet_cnt-4]);
+    total_packetaaa.unshift(total_packet[packet_cnt-3]);
+    total_packetaaa.unshift(total_packet[packet_cnt-2]);
+    total_packetaaa.unshift(total_packet[packet_cnt-1]);
+    total_packetaaa.unshift(total_packet[packet_cnt]);
     }
     
     
@@ -220,7 +221,7 @@ export class Ecgdata12Service {
     // aa.push(kk);
     // console.log(5);
     //return total_packetaaa;
-    return total_packet[packet_cnt];
+    return total_packet[0];
   }
 
   async deleteEcgdata12ByUser(user){

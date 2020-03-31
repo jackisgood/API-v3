@@ -45,7 +45,7 @@ export class Ecgdata12Controller {
         @Query('limit') limit?: number,
     ){
 		var id=parseInt(userId);
-        if (!from) throw new HttpException('from is required', HttpStatus.BAD_REQUEST);
+        //if (!from) throw new HttpException('from is required', HttpStatus.BAD_REQUEST);
 		
         return this.ecgdata12Service.findEcgdata12ByUser({ id, from, to, limit });
     }

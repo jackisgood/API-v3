@@ -64,7 +64,6 @@ export class UserService {
       var reg1=jsonData.Diff_1.split(",");
       var t=reg1[0];
       t=parseInt(t);
-      console.log(t);
       var reg2=jsonData.Diff_2.split(",");
       var reg3=jsonData.Diff_3.split(",");
       if (t!=temp_time) {
@@ -93,7 +92,6 @@ export class UserService {
           trans = trans - 0x10000;
        }
         trans=trans*0.020926339;
-        console.log(trans);
         d3.push(trans);
       }
       data={
