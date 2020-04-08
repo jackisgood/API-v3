@@ -44,6 +44,7 @@ export class UserService {
   }
 
   async updateStatus(patient_code,status) {
+    console.log("Status update");
     patient_code=parseInt(patient_code);
      status=parseInt(status);
      await this.userRepository.update({userId:patient_code} , {Status_time:Date.now()});
@@ -51,7 +52,7 @@ export class UserService {
     var check=this.userRepository.findOne({ 'userId': patient_code } );
     var temp_time=0;
     var num=patient_code.toString();
-    var url='http://10.1.103.134:5544/ECG/ECG_3lead/';
+    var url='http://140.113.170.151:5544/ECG/ECG_3lead/';
     url=url.concat(num);
     while((await check).Status==1) {
       var data:any=[];
@@ -116,7 +117,7 @@ export class UserService {
       }).catch((err) => {
       console.log('錯誤:', err);
       });
-    await sleep(500);
+    await sleep(700);
     check=this.userRepository.findOne({ 'userId': patient_code } );
     }
   }
